@@ -3,8 +3,8 @@
 //! Charcoal uses youdao dict api and google speech. Inspired by wudao-dict.
 
 pub mod app;
-pub mod word;
 pub mod suggestion;
+pub mod word;
 
 pub use app::{
     builder::AppBuilder,
@@ -13,7 +13,7 @@ pub use app::{
     config::Config,
     App,
 };
+pub use suggestion::Suggestion;
 pub use word::{
     frontend::SingleEntry, speech::Speech, Acquire, Answer, ExactQuery, PPrint, Question,
 };
-pub use suggestion::Suggestion;

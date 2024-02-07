@@ -41,7 +41,7 @@ impl App {
 
         if word_entry.not_found() {
             Suggestion::new(word_query.word()).exec()?;
-            return Ok(())
+            return Ok(());
         }
 
         word_entry.pprint(&word_query, &config);
