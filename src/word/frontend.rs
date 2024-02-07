@@ -1,3 +1,6 @@
+use std::fmt::Display;
+
+use crate::app::config::Normal;
 use crate::word::{Answer, Config, PPrint, QueryCache, QueryYoudict, Question};
 use crate::{Acquire, Cache, ExactQuery};
 use colored::Colorize;
@@ -66,5 +69,41 @@ impl PPrint for SingleEntry {
                 )
             }
         }
+    }
+}
+
+impl Display for SingleEntry {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let normal = Normal {
+            with_pronunciation: false,
+            with_variants: true,
+            with_sentence: true,
+        };
+
+        if normal.with_pronunciation && !self.pronunciation.is_empty() {
+            for (accent, pron) in self.pronunciation.iter() {
+                write!(f, "{} {}\t", accent, pron)?;
+            }
+            writeln!(f)?;
+        }
+
+        for line in self.brief.iter() {
+            writeln!(f, "{}", line)?;
+        }
+
+        if normal.with_variants {
+            for line in self.variants.iter() {
+                writeln!(f, "{}", line)?;
+            }
+        }
+
+        if normal.with_sentence {
+            for (i, (ori, trans)) in self.sentence.iter().enumerate() {
+                let idx_str = format!("{}. ", i + 1);
+                let idx_blank = " ".repeat(idx_str.len());
+                write!(f, "{}{}\n{}{}\n", idx_str, ori, idx_blank, trans)?;
+            }
+        }
+        Ok(())
     }
 }
